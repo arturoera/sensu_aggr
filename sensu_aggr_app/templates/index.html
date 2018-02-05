@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+    <link href="{% static "datatables/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block bodyclass %}
+    skin-blue-light
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-3 col-xs-12">
+        <!-- Info Boxes Style 2 -->
+        <div class="info-box bg-red">
+          <span class="info-box-icon"><i class="fa fa-fire"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">CRITICAL</span>
+            <span class="info-box-number">200</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description">
+              * Aggregated Checks from all DCs
+            </span>
+          </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div>
+    <div class="col-lg-3 col-xs-12">
+        <!-- Info Boxes Style 2 -->
+        <div class="info-box bg-yellow">
+          <span class="info-box-icon"><i class="fa fa-warning"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">WARNING</span>
+            <span class="info-box-number">200</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 50%"></div>
+            </div>
+            <span class="progress-description">
+              * Aggregated Checks from all DCs
+            </span>
+          </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div>
+    <div class="col-lg-3 col-xs-12">
+        <!-- Info Boxes Style 2 -->
+        <div class="info-box bg-blue">
+          <span class="info-box-icon"><i class="fa fa-cloud-download"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">HOSTS DOWN</span>
+            <span class="info-box-number">200</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 50%"></div>
+            </div>
+            <span class="progress-description">
+              * Aggregated hosts from all DCs
+            </span>
+          </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div>
+    <div class="col-lg-3 col-xs-12">
+        <!-- Info Boxes Style 2 -->
+        <div class="info-box bg-green">
+          <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">OK</span>
+            <span class="info-box-number">200</span>
+            <div class="progress">
+              <div class="progress-bar" style="width: 50%"></div>
+            </div>
+            <span class="progress-description">
+              * Aggregated Checks from all DCs
+            </span>
+          </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-8">
+        <div class="box box-solid box-danger">
+          <div class="box-header">
+            <h3 class="box-title">CRITICAL</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="critical" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Check Name</th>
+                  <th>DC</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0</td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0</td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0</td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0</td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0</td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0</td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0</td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0</td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+
+              </tbody>
+              <tfoot>
+                <tr>
+                    <th>Source</th>
+                    <th>Check Name</th>
+                    <th>DC</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+
+
+        <div class="box box-solid box-warning">
+          <div class="box-header">
+            <h3 class="box-title">WARNING</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <table id="warning" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Source</th>
+                  <th>Check Name</th>
+                  <th>DC</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0</td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0</td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+
+              </tbody>
+              <tfoot>
+                <tr>
+                    <th>Source</th>
+                    <th>Check Name</th>
+                    <th>DC</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+
+    <div class="col-xs-4">
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">STATS</h3>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <div id="mainb" style="height:370px;"></div>
+          </div><!-- /.box-body -->
+        </div><!-- /.box -->
+
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<!-- ECharts -->
+<script src="{% static "echarts/dist/echarts.min.js" %}"></script>
+<!-- DATA TABES SCRIPT -->
+<script src="{% static "datatables/jquery.dataTables.min.js" %}" type="text/javascript"></script>
+<script src="{% static "datatables/dataTables.bootstrap.min.js" %}" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function () {
+    $('#critical').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+    $('#warning').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+
+    //echart Bar
+
+    if ($('#mainb').length) {
+
+        var echartBar = echarts.init(document.getElementById('mainb'));
+
+        echartBar.setOption({
+            // title: {
+            //     text: 'Graph title',
+            //     subtext: 'Graph Sub-text'
+            // },
+            // tooltip: {
+            //     trigger: 'axis'
+            // },
+            // legend: {
+            //     data: ['sales', 'purchases']
+            // },
+            // toolbox: {
+            //     show: false
+            // },
+            // calculable: false,
+            // xAxis: [{
+            //     type: 'category',
+            //     data: ['1?', '2?', '3?', '4?', '5?', '6?', '7?', '8?', '9?', '10?', '11?', '12?']
+            // }],
+            // yAxis: [{
+            //     type: 'value'
+            // }],
+            // series: [{
+            //     name: 'sales',
+            //     type: 'bar',
+            //     data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+            //     markPoint: {
+            //         data: [{
+            //             type: 'max',
+            //             name: '???'
+            //         }, {
+            //             type: 'min',
+            //             name: '???'
+            //         }]
+            //     },
+            //     markLine: {
+            //         data: [{
+            //             type: 'average',
+            //             name: '???'
+            //         }]
+            //     }
+            // }, {
+            //     name: 'purchases',
+            //     type: 'bar',
+            //     data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+            //     markPoint: {
+            //         data: [{
+            //             name: 'sales',
+            //             value: 182.2,
+            //             xAxis: 7,
+            //             yAxis: 183,
+            //         }, {
+            //             name: 'purchases',
+            //             value: 2.3,
+            //             xAxis: 11,
+            //             yAxis: 3
+            //         }]
+            //     },
+            //     markLine: {
+            //         data: [{
+            //             type: 'average',
+            //             name: '???'
+            //         }]
+            //     }
+            // }]
+
+            tooltip : {
+            trigger: 'axis',
+            axisPointer : {
+                type : 'shadow'
+            }
+            },
+            legend: {
+                data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis:  {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['DC1','DC1','DC3','DC4','DC5','DC6','DC7']
+            },
+            series: [
+                {
+                    name: '直接访问',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390, 330, 320]
+                },
+                {
+                    name: '邮件营销',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90, 230, 210]
+                },
+                {
+                    name: '联盟广告',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290, 330, 310]
+                },
+                {
+                    name: '视频广告',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190, 330, 410]
+                },
+                {
+                    name: '搜索引擎',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290, 1330, 1320]
+                }
+            ]
+        });
+
+    }
+
+
+  });
+</script>
+{% endblock %}
