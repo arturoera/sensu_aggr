@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
     <link href="{% static "datatables/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css" />
+    <link href="{% static "css/sensu_aggr_app.css" %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block bodyclass %}
@@ -77,6 +78,41 @@
         </div><!-- /.info-box -->
     </div>
 </div>
+
+
+<div class="row">
+  <div class="col-sm-4 col-xs-6">
+    <div class="description-block border-right">
+      <h3>Aggregated SENSU Dashboard</h3>
+    </div><!-- /.description-block -->
+  </div><!-- /.col -->
+  <div class="col-sm-2 col-xs-6">
+    <div class="description-block border-right">
+      <h5 class="description-header text-green">6</h5>
+      <span class="description-text"><i class="fa fa-database"></i> TOTAL DATACENTERS</span>
+    </div><!-- /.description-block -->
+  </div><!-- /.col -->
+  <div class="col-sm-2 col-xs-6">
+    <div class="description-block border-right">
+      <h5 class="description-header text-green">345</h5>
+      <span class="description-text"><i class="fa fa-server"></i> TOTAL MONITORED HOSTS</span>
+    </div><!-- /.description-block -->
+  </div><!-- /.col -->
+  <div class="col-sm-2 col-xs-6">
+    <div class="description-block border-right">
+      <h5 class="description-header text-green">YES</h5>
+      <span class="description-text"><i class="fa fa-flash"></i> CACHED RESPONSE</span>
+    </div><!-- /.description-block -->
+  </div><!-- /.col -->
+  <div class="col-sm-2 col-xs-6">
+    <div class="description-block">
+      <h5 class="description-header">1200</h5>
+      <span class="description-text"><i class="fa fa-clock-o"></i> TIME TO GENERATE PAGE</span>
+    </div><!-- /.description-block -->
+  </div>
+</div><!-- /.row -->
+
+<hr />
 
 <div class="row">
     <div class="col-xs-8">
