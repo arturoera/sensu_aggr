@@ -1,0 +1,16 @@
+---
+dcs:
+  -
+    name: 'dfw'
+    url: 'sensu0'
+    port: '4567'
+    uchiwa: 'http://sensu0:3000'
+    user: 'admin'
+    password: ''
+  -
+    name: 'hkg'
+    url: 'sensu0'
+    port: '4567'
+    uchiwa: 'http://sensu0:3000'
+    user: 'admin'
+    password: ''
