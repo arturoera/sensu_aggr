@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sensu_aggr_project.middleware.StatsMiddleware',
 ]
 
 ROOT_URLCONF = 'sensu_aggr_project.urls'

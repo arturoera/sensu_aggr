@@ -5,14 +5,14 @@ from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
 from django.conf import settings
-from helpers import get_data
+import helpers
 
 # Get global settings
 dcs = getattr(settings, 'DCS', '')
 
 
 def index(request):
-    data = get_data(dcs[0])
+    data = helpers.agg_dc_data(dcs)
     context = {
         'data': data
     }

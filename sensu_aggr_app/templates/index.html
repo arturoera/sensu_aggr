@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load utilities_tags %}
 
 {% block stylesheets %}
     <link href="{% static "datatables/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css" />
@@ -13,15 +14,20 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-lg-3 col-xs-12">
+    <div class="col-md-3">
+        <div class="description-block">
+          <h3>Aggregated SENSU Dashboard</h3>
+        </div><!-- /.description-block -->
+    </div>
+    <div class="col-md-3">
         <!-- Info Boxes Style 2 -->
         <div class="info-box bg-red">
           <span class="info-box-icon"><i class="fa fa-fire"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">CRITICAL</span>
-            <span class="info-box-number">200</span>
+            <span class="info-box-number">{{ data.crit }}</span>
             <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
+              <div class="progress-bar" style="width: 100%"></div>
             </div>
             <span class="progress-description">
               * Aggregated Checks from all DCs
@@ -29,15 +35,15 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
     </div>
-    <div class="col-lg-3 col-xs-12">
+    <div class="col-md-3">
         <!-- Info Boxes Style 2 -->
         <div class="info-box bg-yellow">
           <span class="info-box-icon"><i class="fa fa-warning"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">WARNING</span>
-            <span class="info-box-number">200</span>
+            <span class="info-box-number">{{ data.warn }}</span>
             <div class="progress">
-              <div class="progress-bar" style="width: 50%"></div>
+              <div class="progress-bar" style="width: 100%"></div>
             </div>
             <span class="progress-description">
               * Aggregated Checks from all DCs
@@ -45,8 +51,7 @@
           </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
     </div>
-    <div class="col-lg-3 col-xs-12">
-        <!-- Info Boxes Style 2 -->
+    <!-- <div class="col-lg-3 col-xs-12">
         <div class="info-box bg-blue">
           <span class="info-box-icon"><i class="fa fa-cloud-download"></i></span>
           <div class="info-box-content">
@@ -58,18 +63,18 @@
             <span class="progress-description">
               * Aggregated hosts from all DCs
             </span>
-          </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-    </div>
-    <div class="col-lg-3 col-xs-12">
+          </div>
+        </div>
+    </div> -->
+    <div class="col-md-3">
         <!-- Info Boxes Style 2 -->
         <div class="info-box bg-green">
           <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">OK</span>
-            <span class="info-box-number">200</span>
+            <span class="info-box-number">{{ data.ok }}</span>
             <div class="progress">
-              <div class="progress-bar" style="width: 50%"></div>
+              <div class="progress-bar" style="width: 100%"></div>
             </div>
             <span class="progress-description">
               * Aggregated Checks from all DCs
@@ -83,30 +88,32 @@
 <div class="row">
   <div class="col-sm-4 col-xs-6">
     <div class="description-block border-right">
-      <h3>Aggregated SENSU Dashboard</h3>
+
     </div><!-- /.description-block -->
   </div><!-- /.col -->
   <div class="col-sm-2 col-xs-6">
     <div class="description-block border-right">
-      <h5 class="description-header text-green">6</h5>
+      <h5 class="description-header text-green">{{ data.total_dcs }}</h5>
       <span class="description-text"><i class="fa fa-database"></i> TOTAL DATACENTERS</span>
     </div><!-- /.description-block -->
   </div><!-- /.col -->
   <div class="col-sm-2 col-xs-6">
     <div class="description-block border-right">
-      <h5 class="description-header text-green">345</h5>
+      <h5 class="description-header text-green">XXX</h5>
       <span class="description-text"><i class="fa fa-server"></i> TOTAL MONITORED HOSTS</span>
     </div><!-- /.description-block -->
   </div><!-- /.col -->
   <div class="col-sm-2 col-xs-6">
     <div class="description-block border-right">
-      <h5 class="description-header text-green">YES</h5>
+      <h5 class="description-header text-green">XXX</h5>
       <span class="description-text"><i class="fa fa-flash"></i> CACHED RESPONSE</span>
     </div><!-- /.description-block -->
   </div><!-- /.col -->
   <div class="col-sm-2 col-xs-6">
     <div class="description-block">
-      <h5 class="description-header">1200</h5>
+        <h5 class="description-header text-green"><!-- STATS: Total: %(total_time).2fs Python: %(python_time).2fs ENDSTATS --></h5>
+
+
       <span class="description-text"><i class="fa fa-clock-o"></i> TIME TO GENERATE PAGE</span>
     </div><!-- /.description-block -->
   </div>
@@ -132,67 +139,15 @@
                 </tr>
               </thead>
               <tbody>
+                  {% for row in data.checks_crit %}
                 <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
+                  <td>{{ row.client }}</td>
+                  <td>{{ row.check.name }}</td>
+                  <td>{{ row.dc }}</td>
+                  <td>{{ row.check.output }}</td>
+                  <td>{{ row.check.issued|epoch_to_date }}</td>
                 </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0</td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0</td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0</td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0</td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
+                 {% endfor %}
 
               </tbody>
               <tfoot>
@@ -225,22 +180,15 @@
                 </tr>
               </thead>
               <tbody>
+                  {% for row in data.checks_warn %}
                 <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
+                  <td>{{ row.client }}</td>
+                  <td>{{ row.check.name }}</td>
+                  <td>{{ row.dc }}</td>
+                  <td>{{ row.check.output }}</td>
+                  <td>{{ row.check.issued|epoch_to_date }}</td>
                 </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0</td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
+                 {% endfor %}
 
               </tbody>
               <tfoot>

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.conf import settings
 import requests
 import requests_cache
 import time
+import json
+import re
 
 # Get global settings
-requests_cache.install_cache('sensu_cache', backend='sqlite', old_data_on_error=True)
+# requests_cache.install_cache('sensu_cache', backend='sqlite', old_data_on_error=True)
 
 # requests_cache.get_cache()
 # session = requests_cache.CachedSession('sensu_cache')
@@ -14,8 +15,12 @@ requests_cache.install_cache('sensu_cache', backend='sqlite', old_data_on_error=
 # requests_cache.CachedSession()
 
 
-def get_data(dc, timeout=120):
+def get_data(dc, timeout=120, clear_cache=False):
     print "Retrieving data for datacenter: {0}".format(dc['name'])
+    # Configure our cache, create one DB per DC.
+    requests_cache.install_cache(dc["name"], backend='sqlite', old_data_on_error=True)
+    if clear_cache:
+        requests_cache.clear()
     url = 'http://{0}:{1}/results'.format(dc['url'], dc['port'])
     data = None
     r = None
@@ -42,46 +47,90 @@ def get_data(dc, timeout=120):
     return data
 
 
-def agg_host_data(data, stashes, client_data=None, filters=None):
+def get_stashes(dc, timeout=120, clear_cache=False):
+    print "Retrieving stashes for datacenter: {0}".format(dc['name'])
+    # Configure our cache, create one DB per DC.
+    requests_cache.install_cache(dc["name"], backend='sqlite', old_data_on_error=True)
+    if clear_cache:
+        requests_cache.clear()
+    url = 'http://{0}:{1}/silenced'.format(dc['url'], dc['port'])
+    data = None
+    r = None
+    now = time.ctime(int(time.time()))
+    try:
+        if 'user' and 'password' in dc:
+            r = requests.get(url, auth=(dc['user'], dc['password']), timeout=timeout)
+        else:
+            r = requests.get(url, timeout=timeout)
+        print "Time: {0} / Stashes Used Cache: {1}".format(now, r.from_cache)
+        # print requests_cache.get_cache()
+        r.raise_for_status()
+    except Exception as ex:
+        print "Got exception while retrieving stashes for dc: {0} ex: {1}".format(dc, str(ex))
+        pass
+    finally:
+        if r:
+            data = r.json()
+            r.close()
+        else:
+            print "Got no data while making API call to stashes at {0} ".format(dc)
+
+    print "Data Retrieval for datacenter stashes {0} complete".format(dc['name'])
+    return data
+
+
+def check_stash(stashes, hostname, checkname):
+    for s in stashes:
+        if re.match('^client:' + hostname + ':' + checkname + '$', s['id']):
+            return True
+        if re.match('^client:' + hostname + ':\*', s['id']):
+            return True
+    return False
+
+
+def agg_dc_data(dcs, clear_cache=False):
     """
-    returns: a dict of {"hostname": [list,of,alert,statuses], "hostname2": [list,of,alert,statuses]}
+    returns: a list of dictionaries [{"dc": "dfw", {"hostname": [list,of,alert,statuses], "hostname2": [list,of,alert,statuses]}}]
     """
 
-    _data = data
-    _stashes = stashes
-    _clients = client_data
-    retdata = {}
+    _ok = 0
+    _crit = 0
+    _warn = 0
+    _checks_crit = []
+    _checks_warn = []
+    for dc in dcs:
+        data = get_data(dc, clear_cache=clear_cache)
+        stashes = get_stashes(dc, clear_cache=clear_cache)
+        print "Getting aggr data for DC: {}, number of total results: {}".format(dc["name"], len(data))
+        for check in data:
+            if not check['check']['name'] == "keepalive" and int(check['check']['status']) == 0:
+                _ok += 1
+            if not check['check']['name'] == "keepalive" and int(check['check']['status']) == 1:
+                _crit += 1
+                print json.dumps(check, indent=True)
+            if not check['check']['name'] == "keepalive" and int(check['check']['status']) == 2:
+                _warn += 1
 
-    if filters and len(filters) > 0:
-        filters = filters.split(',')
+            # Get only the desire list of hosts with Critial and Warning alerts.
+            if check['check']['status'] and check['check']['name'] != 'keepalive':
+                if not check_stash(stashes, check["client"], check['check']['name']):
+                    # look only for status 1 Critical and 2 Warning.
+                    if int(check['check']['status']) == 1:
+                        check["dc"] = dc["name"]
+                        _checks_crit.append(check)
+                    if int(check['check']['status']) == 2:
+                        check["dc"] = dc["name"]
+                        _checks_warn.append(check)
 
-    if _clients is not None:
-        for c in _clients:
-            if filters and len(filters) > 0:
-                for f in filters:
-                    if f in c['subscriptions']:
-                        _host = c['name']
-                        retdata[_host] = []
-                        break
-            else:
-                _host = c['name']
-                retdata[_host] = []
-    else:
-        for check in _data:
-            _host = check['client']
-            retdata[_host] = []
-
-    for check in _data:
-        _host = check['client']
-        if check['check']['status'] and check['check']['name'] != 'keepalive':
-            if _host in retdata:
-                if not check_stash(_stashes, _host, check['check']['name']):
-                    retdata[_host].append(check['check']['status'])
-
-        if check['check']['status'] and check['check']['name'] == 'keepalive':
-            if _host in retdata:
-                retdata[_host].append(-1)
-
-    assert type(retdata) == dict
-
-    return retdata
+    # Add this data into one dictionary
+    output = {
+        "dc": dc["name"],
+        "ok": _ok,
+        "crit": _crit,
+        "warn": _warn,
+        "checks_crit": _checks_crit,
+        "checks_warn": _checks_warn,
+        "total_dcs": len(dcs)
+        }
+    # print json.dumps(output, indent=True)
+    return output
