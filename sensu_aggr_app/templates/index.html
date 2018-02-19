@@ -252,74 +252,21 @@
     //echart Bar
 
     if ($('#mainb').length) {
+        var y_data = {{ y_data|safe }}
+        var crit_series = {{ crit_series|safe }}
+        var warn_series = {{ warn_series|safe }}
+        var ok_series = {{ ok_series|safe }}
 
-        var echartBar = echarts.init(document.getElementById('mainb'));
+        var theme = {
+            color: [
+                '#DD4B39', '#F39C12', '#00A65A'
+            ]}
+
+        var echartBar = echarts.init(document.getElementById('mainb'), theme);
+
 
         echartBar.setOption({
-            // title: {
-            //     text: 'Graph title',
-            //     subtext: 'Graph Sub-text'
-            // },
-            // tooltip: {
-            //     trigger: 'axis'
-            // },
-            // legend: {
-            //     data: ['sales', 'purchases']
-            // },
-            // toolbox: {
-            //     show: false
-            // },
-            // calculable: false,
-            // xAxis: [{
-            //     type: 'category',
-            //     data: ['1?', '2?', '3?', '4?', '5?', '6?', '7?', '8?', '9?', '10?', '11?', '12?']
-            // }],
-            // yAxis: [{
-            //     type: 'value'
-            // }],
-            // series: [{
-            //     name: 'sales',
-            //     type: 'bar',
-            //     data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-            //     markPoint: {
-            //         data: [{
-            //             type: 'max',
-            //             name: '???'
-            //         }, {
-            //             type: 'min',
-            //             name: '???'
-            //         }]
-            //     },
-            //     markLine: {
-            //         data: [{
-            //             type: 'average',
-            //             name: '???'
-            //         }]
-            //     }
-            // }, {
-            //     name: 'purchases',
-            //     type: 'bar',
-            //     data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-            //     markPoint: {
-            //         data: [{
-            //             name: 'sales',
-            //             value: 182.2,
-            //             xAxis: 7,
-            //             yAxis: 183,
-            //         }, {
-            //             name: 'purchases',
-            //             value: 2.3,
-            //             xAxis: 11,
-            //             yAxis: 3
-            //         }]
-            //     },
-            //     markLine: {
-            //         data: [{
-            //             type: 'average',
-            //             name: '???'
-            //         }]
-            //     }
-            // }]
+
 
             tooltip : {
             trigger: 'axis',
@@ -328,7 +275,7 @@
             }
             },
             legend: {
-                data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+                data: ['Critical', 'Warning']
             },
             grid: {
                 left: '3%',
@@ -341,11 +288,11 @@
             },
             yAxis: {
                 type: 'category',
-                data: ['DC1','DC1','DC3','DC4','DC5','DC6','DC7']
+                data: y_data
             },
             series: [
                 {
-                    name: '直接访问',
+                    name: 'Critical',
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -354,10 +301,10 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [320, 302, 301, 334, 390, 330, 320]
+                    data: crit_series
                 },
                 {
-                    name: '邮件营销',
+                    name: 'Warning',
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -366,44 +313,10 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [120, 132, 101, 134, 90, 230, 210]
+                    data: warn_series
                 },
-                {
-                    name: '联盟广告',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [150, 212, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'bar',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
-                    },
-                    data: [820, 832, 901, 934, 1290, 1330, 1320]
-                }
+                
+
             ]
         });
 
